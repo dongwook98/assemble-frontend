@@ -4,7 +4,7 @@ import { DropdownMenu } from '@/shared/ui/DropdownMenu';
 import { LogOutIcon, SettingsIcon, UserIcon } from 'lucide-react';
 import Image from 'next/image';
 
-export default function UserAccountDropdownMenu() {
+export function UserAccountDropdownMenu() {
   return (
     <DropdownMenu>
       <DropdownMenu.Trigger className="rounded-full ring-offset-white focus-visible:ring-2 focus-visible:ring-gray-200 focus-visible:outline-none">
