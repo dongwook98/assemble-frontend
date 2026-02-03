@@ -1,5 +1,4 @@
-import { Button } from '@/shared/ui/Button';
-import { PlusIcon } from 'lucide-react';
+import { DesktopSidebar } from '@/widgets/sidebar/ui/DesktopSidebar';
 
 interface GroupListLayoutProps {
   children: React.ReactNode;
@@ -7,12 +6,10 @@ interface GroupListLayoutProps {
 
 export default function GroupListLayout({ children }: GroupListLayoutProps) {
   return (
-    <>
-      {children}
-      <Button variant="primary" className="absolute right-2 bottom-4 md:hidden">
-        <PlusIcon className="transition-transform duration-300 group-hover:rotate-90" />
-        <span>모임 만들기</span>
-      </Button>
-    </>
+    <div className="flex px-4 lg:px-8">
+      {/* 왼쪽 사이드바 */}
+      <DesktopSidebar />
+      <div className="flex-1">{children}</div>
+    </div>
   );
 }
