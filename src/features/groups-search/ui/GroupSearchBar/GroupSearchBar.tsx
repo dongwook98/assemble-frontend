@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { SearchIcon } from 'lucide-react';
 
@@ -12,11 +12,11 @@ import {
 } from '@/shared/ui/InputGroup';
 import { ROUTES } from '@/shared/constants/routes';
 
-export default function GroupSearchBar() {
+// 실제 검색 로직을 담당하는 내부 컴포넌트
+function GroupSearchBarInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // 기존 URL의 검색어를 초기값으로 사용
   const [query, setQuery] = useState(searchParams.get('query') || '');
 
   const handleSearch = (e: React.FormEvent) => {
@@ -49,5 +49,19 @@ export default function GroupSearchBar() {
         </InputGroupAddon>
       </InputGroup>
     </form>
+  );
+}
+
+// 외부로 수출되는 메인 컴포넌트 (Suspense 래퍼)
+export default function GroupSearchBar() {
+  return (
+    <Suspense
+      // fallback 디자인은 헤더 레이아웃을 해치지 않게 빈 상자나 스켈레톤을 넣어주세요
+      fallback={
+        <div className="h-11 w-96 animate-pulse rounded-lg bg-gray-100" />
+      }
+    >
+      <GroupSearchBarInner />
+    </Suspense>
   );
 }
