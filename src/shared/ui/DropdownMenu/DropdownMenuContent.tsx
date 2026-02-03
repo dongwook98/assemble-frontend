@@ -28,7 +28,10 @@ export default function DropdownMenuContent({
     const handleClose = () => closeDropdownMenu();
 
     const handleEvents = (e: MouseEvent | KeyboardEvent) => {
+      // ESC 키 처리
       if (e instanceof KeyboardEvent && e.key === 'Escape') handleClose();
+
+      // 외부 클릭 처리: Trigger의 stopPropagation 덕분에 버튼 클릭 시에는 이 로직이 실행되지 않음
       if (
         e instanceof MouseEvent &&
         contentRef.current &&
@@ -38,13 +41,13 @@ export default function DropdownMenuContent({
       }
     };
 
-    document.addEventListener('mousedown', handleEvents);
+    document.addEventListener('click', handleEvents);
     document.addEventListener('keydown', handleEvents);
     window.addEventListener('resize', handleClose);
     window.addEventListener('scroll', handleClose, { passive: true });
 
     return () => {
-      document.removeEventListener('mousedown', handleEvents);
+      document.removeEventListener('click', handleEvents);
       document.removeEventListener('keydown', handleEvents);
       window.removeEventListener('resize', handleClose);
       window.removeEventListener('scroll', handleClose);

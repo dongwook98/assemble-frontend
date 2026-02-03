@@ -1,4 +1,4 @@
-import { ROUTES } from '@/shared/routes';
+import { ROUTES } from '@/shared/constants/routes';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -26,5 +26,13 @@ export default function Logo({ width = 120, href }: LogoProps) {
     />
   );
 
-  return href ? <Link href={ROUTES.HOME}>{logo}</Link> : logo;
+  if (href) {
+    return (
+      <Link href={ROUTES.HOME} className="inline-block shrink-0">
+        {logo}
+      </Link>
+    );
+  }
+
+  return <div className="inline-block shrink-0">{logo}</div>;
 }

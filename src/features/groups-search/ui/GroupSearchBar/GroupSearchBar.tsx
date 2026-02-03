@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { SearchIcon } from 'lucide-react';
-import { ROUTES } from '@/shared/routes';
+
 import { Button } from '@/shared/ui/Button';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from '@/shared/ui/InputGroup';
+import { ROUTES } from '@/shared/constants/routes';
 
 export default function GroupSearchBar() {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function GroupSearchBar() {
       params.delete('query');
     }
 
-    router.push(`${ROUTES.GROUPS}?${params.toString()}`);
+    router.push(`${ROUTES.GROUPS.LIST}?${params.toString()}`);
   };
 
   return (

@@ -1,4 +1,4 @@
-import { ROUTES } from '@/shared/routes';
+import { ROUTES } from '@/shared/constants/routes';
 import { NavButton } from '@/shared/ui/Button';
 
 export default function LoginPage() {
