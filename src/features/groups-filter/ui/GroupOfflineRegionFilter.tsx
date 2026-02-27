@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { ChevronDownIcon, MapPinIcon } from 'lucide-react';
 import { useGroupListFilter } from '../lib/hooks/useGroupListFilter';
 
-export default function GroupOfflineRegionFilter() {
+export function GroupOfflineRegionFilter() {
   const { selectedValues, updateFilter } = useGroupListFilter('region');
 
   const currentRegion = selectedValues[0] ?? '';
