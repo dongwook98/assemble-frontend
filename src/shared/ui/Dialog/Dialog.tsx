@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect } from 'react';
+import { DialogPortal } from './DialogPortal';
 
 interface DialogContextValue {
   onClose: () => void;
@@ -31,7 +32,7 @@ export default function Dialog({ open, onClose, children }: DialogProps) {
 
   return (
     <DialogContext.Provider value={{ onClose }}>
-      {children}
+      <DialogPortal>{children}</DialogPortal>
     </DialogContext.Provider>
   );
 }
