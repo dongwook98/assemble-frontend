@@ -1,12 +1,11 @@
 'use client';
 
-import { ROUTES } from '@/shared/constants/routes';
-import { NavButton } from '@/shared/ui/Button';
+import LoginForm from '@/features/auth/ui/LoginForm';
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogOverlay,
+  DialogPortal,
 } from '@/shared/ui/Dialog';
 import { useRouter } from 'next/navigation';
 
@@ -15,17 +14,12 @@ export default function LoginModalPage() {
 
   return (
     <Dialog open={true} onClose={() => router.back()}>
-      <DialogOverlay />
-      <DialogContent>
-        <DialogHeader>로그인</DialogHeader>
-
-        <NavButton href={ROUTES.AUTH.FIND_PASSWORD} replace>
-          비밀번호 찾기
-        </NavButton>
-        <NavButton href={ROUTES.AUTH.SIGNUP} replace>
-          회원가입
-        </NavButton>
-      </DialogContent>
+      <DialogPortal>
+        <DialogOverlay />
+        <DialogContent>
+          <LoginForm onSuccess={() => router.back()} />
+        </DialogContent>
+      </DialogPortal>
     </Dialog>
   );
 }
