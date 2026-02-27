@@ -1,12 +1,11 @@
 'use client';
 
-import { ROUTES } from '@/shared/constants/routes';
-import { NavButton } from '@/shared/ui/Button';
+import FindPasswordForm from '@/features/auth/ui/FindPasswordForm';
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogOverlay,
+  DialogPortal,
 } from '@/shared/ui/Dialog';
 import { useRouter } from 'next/navigation';
 
@@ -15,14 +14,12 @@ export default function FindPasswordModalPage() {
 
   return (
     <Dialog open={true} onClose={() => router.back()}>
-      <DialogOverlay />
-      <DialogContent>
-        <DialogHeader>비밀번호 찾기</DialogHeader>
-
-        <NavButton href={ROUTES.AUTH.LOGIN} replace>
-          로그인으로 돌아가기
-        </NavButton>
-      </DialogContent>
+      <DialogPortal>
+        <DialogOverlay />
+        <DialogContent>
+          <FindPasswordForm />
+        </DialogContent>
+      </DialogPortal>
     </Dialog>
   );
 }

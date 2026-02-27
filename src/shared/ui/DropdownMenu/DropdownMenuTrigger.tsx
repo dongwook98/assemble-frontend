@@ -1,13 +1,21 @@
+'use client';
+
 import { ComponentProps, useImperativeHandle, useRef } from 'react';
 import { useDropdownMenu } from './DropdownMenuRoot';
 import { cn } from '@/shared/lib/utils';
+import { Slot } from '@radix-ui/react-slot';
+
+interface DropdownMenuTriggerProps extends ComponentProps<'button'> {
+  asChild?: boolean;
+}
 
 export default function DropdownMenuTrigger({
   children,
   className,
   ref,
+  asChild = false,
   ...props
-}: ComponentProps<'button'>) {
+}: DropdownMenuTriggerProps) {
   const { toggleDropdownMenu, updateTriggerRect } = useDropdownMenu();
   const internalRef = useRef<HTMLButtonElement>(null);
 
@@ -29,8 +37,10 @@ export default function DropdownMenuTrigger({
     props.onClick?.(e);
   };
 
+  const Component = asChild ? Slot : 'button';
+
   return (
-    <button
+    <Component
       type="button"
       {...props}
       ref={internalRef}
@@ -38,6 +48,6 @@ export default function DropdownMenuTrigger({
       className={cn('flex items-center justify-center', className)}
     >
       {children}
-    </button>
+    </Component>
   );
 }

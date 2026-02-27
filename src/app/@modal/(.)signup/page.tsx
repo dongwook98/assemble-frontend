@@ -1,12 +1,11 @@
 'use client';
 
-import { ROUTES } from '@/shared/constants/routes';
-import { NavButton } from '@/shared/ui/Button';
+import SignupForm from '@/features/auth/ui/SignupForm';
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogOverlay,
+  DialogPortal,
 } from '@/shared/ui/Dialog';
 import { useRouter } from 'next/navigation';
 
@@ -15,14 +14,12 @@ export default function SignupModalPage() {
 
   return (
     <Dialog open={true} onClose={() => router.back()}>
-      <DialogOverlay />
-      <DialogContent>
-        <DialogHeader>회원가입</DialogHeader>
-
-        <NavButton href={ROUTES.AUTH.LOGIN} replace>
-          로그인으로 돌아가기
-        </NavButton>
-      </DialogContent>
+      <DialogPortal>
+        <DialogOverlay />
+        <DialogContent>
+          <SignupForm />
+        </DialogContent>
+      </DialogPortal>
     </Dialog>
   );
 }
