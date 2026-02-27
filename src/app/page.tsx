@@ -1,5 +1,6 @@
-import LandingPage from '@/features/landing/ui/LandingPage';
+import { redirect } from 'next/navigation';
 
 export default function HomePage() {
-  return <LandingPage />;
+  redirect('/groups');
+  return;
 }
