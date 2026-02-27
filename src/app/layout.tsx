@@ -3,6 +3,7 @@ import '@/shared/styles/globals.css';
 import { Header } from '@/widgets/header';
 import { MobileSidebar } from '@/widgets/sidebar';
 import { pretendard } from '@/shared/lib/fonts';
+import Providers from './_providers/Providers';
 
 export const metadata: Metadata = {
   title: 'Assemble | 지역 기반 모임 플랫폼',
@@ -24,12 +25,15 @@ export default function RootLayout({ children, modal }: RootLayoutProps) {
   return (
     <html lang="ko" className={pretendard.variable}>
       <body>
-        <Header />
+        <Providers>
+          <Header />
 
-        <MobileSidebar />
+          <MobileSidebar />
 
-        {children}
-        {modal}
+          {children}
+
+          {modal}
+        </Providers>
       </body>
     </html>
   );

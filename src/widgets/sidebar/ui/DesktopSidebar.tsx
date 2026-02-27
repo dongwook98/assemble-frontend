@@ -10,9 +10,9 @@ import { SIDEBAR_MENU_ITEMS } from '../constants';
 
 export function DesktopSidebar() {
   const pathname = usePathname();
-  console.log('🚀 ~ DesktopSidebar ~ pathname:', pathname);
+
   const { isCollapsed } = useSidebarStore();
-  console.log('🚀 ~ DesktopSidebar ~ isCollapsed:', isCollapsed);
+
   const isGroupListPage =
     pathname === ROUTES.GROUPS.LIST ||
     ROUTES.GROUPS.POPULAR ||
@@ -28,7 +28,7 @@ export function DesktopSidebar() {
         isCollapsed ? 'w-13' : 'w-64'
       )}
     >
-      <div className="flex h-full flex-col py-8">
+      <div className="flex h-full flex-col">
         <nav className="flex-1 space-y-2">
           {SIDEBAR_MENU_ITEMS.map((item) => (
             <NavButton

@@ -12,4 +12,19 @@ export const ROUTES = {
     FIND_PASSWORD: '/find-password',
     SIGNUP: '/signup',
   },
+  MYPAGE: {
+    HOME: '/mypage',
+    GROUPS: {
+      LIKED: '/mypage/groups/liked',
+      JOINED: '/mypage/groups/joined',
+    },
+    ACTIVITIES: {
+      POSTS: '/mypage/activities/posts',
+      COMMENTS: '/mypage/activities/comments',
+    },
+    SETTINGS: {
+      PROFILE: '/mypage/settings/profile',
+      NOTIFICATIONS: '/mypage/settings/notifications',
+    },
+  },
 } as const;
