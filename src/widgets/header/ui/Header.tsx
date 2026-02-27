@@ -4,7 +4,7 @@ import { GroupSearchBar } from '@/features/groups-search/ui/GroupSearchBar';
 import { SidebarTrigger } from '@/features/sidebar-toggle';
 import { ROUTES } from '@/shared/constants/routes';
 import { HeaderActionGroup } from './HeaderActionGroup/HeaderActionGroup';
-import GroupOfflineRegionFilter from '@/features/groups-filter/ui/GroupOfflineRegionFilter';
+import { GroupOfflineRegionFilter } from '@/features/groups-filter/ui/GroupOfflineRegionFilter';
 
 export default function Header() {
   return (
