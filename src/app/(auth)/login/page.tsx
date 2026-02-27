@@ -1,12 +1,11 @@
-import { ROUTES } from '@/shared/constants/routes';
-import { NavButton } from '@/shared/ui/Button';
+import LoginForm from '@/features/auth/ui/LoginForm';
 
 export default function LoginPage() {
   return (
-    <>
-      LoginPage
-      <NavButton href={ROUTES.AUTH.FIND_PASSWORD}>비밀번호 찾기</NavButton>
-      <NavButton href={ROUTES.AUTH.SIGNUP}>회원가입</NavButton>
-    </>
+    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center p-4">
+      <div className="w-full max-w-[400px]">
+        <LoginForm />
+      </div>
+    </div>
   );
 }
