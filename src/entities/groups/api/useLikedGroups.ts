@@ -3,12 +3,12 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getLikedGroups } from './getLikedGroups';
 import { Group } from '../model/types';
-
-import { CATEGORY_MAP, LEVEL_MAP } from '../lib/constants';
+import { groupKeys } from '../model/group.queries';
+import { CATEGORY_MAP, LEVEL_MAP, STATUS_MAP } from '../lib/constants';
 
 export const useLikedGroups = () => {
   return useSuspenseQuery({
-    queryKey: ['groups', 'liked'],
+    queryKey: groupKeys.liked(),
     queryFn: getLikedGroups,
     select: (data): Group[] =>
       data.list.map((group) => ({
@@ -19,6 +19,7 @@ export const useLikedGroups = () => {
         categoryLabel: CATEGORY_MAP[group.category] || group.category,
         location: group.region,
         levelLabel: LEVEL_MAP[group.level] || group.level,
+        statusLabel: STATUS_MAP[group.status] || group.status,
         participants: {
           current: group.curNumbers,
           max: group.maxNumbers,

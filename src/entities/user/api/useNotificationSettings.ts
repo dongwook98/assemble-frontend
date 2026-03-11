@@ -10,10 +10,11 @@ import {
   updateNotificationSettings,
 } from './notifications';
 import { NotificationSettings } from '../model/types';
+import { userKeys } from '../model/user.queries';
 
 export const useNotificationSettings = () => {
   return useSuspenseQuery({
-    queryKey: ['user', 'settings', 'notifications'],
+    queryKey: userKeys.notifications(),
     queryFn: getNotificationSettings,
     staleTime: 5 * 60 * 1000,
   });
@@ -27,7 +28,7 @@ export const useUpdateNotificationSettings = () => {
       updateNotificationSettings(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['user', 'settings', 'notifications'],
+        queryKey: userKeys.notifications(),
       });
     },
   });
