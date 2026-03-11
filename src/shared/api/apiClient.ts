@@ -1,5 +1,6 @@
 import ky, { type BeforeErrorHook, type BeforeRequestHook } from 'ky';
 import { useAuthStore } from '@/shared/model/auth/store';
+import { ApiResponse } from './types';
 
 const beforeRequest: BeforeRequestHook = async (request) => {
   // Zustand 메모리에서 access_token 꺼내서 헤더 주입
@@ -7,6 +8,40 @@ const beforeRequest: BeforeRequestHook = async (request) => {
   if (token) {
     request.headers.set('Authorization', `Bearer ${token}`);
   }
+};
+
+/**
+ * 백엔드 공통 응답 규격(ApiResponse)을 처리하는 훅입니다.
+ * 성공 시 result 필드만 추출하여 반환합니다.
+ */
+const handleApiResponse = async (
+  _request: Request,
+  _options: unknown,
+  response: Response
+) => {
+  if (!response.ok) return response;
+
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    // response.clone()을 사용하여 원본 응답 보존
+    const clonedResponse = response.clone();
+    const body = (await clonedResponse.json()) as ApiResponse<unknown>;
+
+    // 백엔드 규격상 성공이지만 비즈니스 로직 에러인 경우
+    if (body.isSuccess === false) {
+      throw new Error(body.message || '요청 처리에 실패했습니다.');
+    }
+
+    // result 필드만 담은 새로운 응답 객체 생성하여 반환
+    // 원본 응답의 메타데이터(상태코드, 헤더 등)를 최대한 보존
+    return new Response(JSON.stringify(body.result), {
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers,
+    });
+  }
+
+  return response;
 };
 
 const afterResponseRetry = async (
@@ -53,7 +88,7 @@ export const apiClient = ky.create({
   credentials: 'include', // refresh_token 쿠키를 함께 전송
   hooks: {
     beforeRequest: [beforeRequest],
-    afterResponse: [afterResponseRetry],
+    afterResponse: [handleApiResponse, afterResponseRetry],
     beforeError: [beforeError],
   },
 });

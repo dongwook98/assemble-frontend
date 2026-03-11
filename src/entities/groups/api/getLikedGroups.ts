@@ -1,4 +1,5 @@
 import { apiClient } from '@/shared/api/apiClient';
+import { ApiListResponse } from '@/shared/api/types';
 import { GroupListItemDTO } from './getGroupList';
 
 /**
@@ -6,5 +7,5 @@ import { GroupListItemDTO } from './getGroupList';
  * GET /groups/liked
  */
 export const getLikedGroups = async () => {
-  return apiClient.get('groups/liked').json<{ list: GroupListItemDTO[] }>();
+  return apiClient.get('groups/liked').json<ApiListResponse<GroupListItemDTO>>();
 };
