@@ -3,12 +3,12 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getPendingGroups } from './getPendingGroups';
 import { Group } from '../model/types';
-
-import { CATEGORY_MAP, LEVEL_MAP } from '../lib/constants';
+import { groupKeys } from '../model/group.queries';
+import { CATEGORY_MAP, LEVEL_MAP, STATUS_MAP } from '../lib/constants';
 
 export const usePendingGroups = () => {
   return useSuspenseQuery({
-    queryKey: ['groups', 'pending'],
+    queryKey: groupKeys.pending(),
     queryFn: getPendingGroups,
     select: (data): Group[] =>
       data.list.map((group) => ({
@@ -19,6 +19,7 @@ export const usePendingGroups = () => {
         categoryLabel: CATEGORY_MAP[group.category] || group.category,
         location: group.region,
         levelLabel: LEVEL_MAP[group.level] || group.level,
+        statusLabel: STATUS_MAP[group.status] || group.status,
         participants: {
           current: group.curNumbers,
           max: group.maxNumbers,

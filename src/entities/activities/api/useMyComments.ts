@@ -3,10 +3,11 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getMyComments } from './getMyComments';
 import { MyComment } from '../model/types';
+import { activityKeys } from '../model/activity.queries';
 
 export const useMyComments = () => {
   return useSuspenseQuery({
-    queryKey: ['activities', 'comments'],
+    queryKey: activityKeys.comments(),
     queryFn: getMyComments,
     select: (data): MyComment[] =>
       data.list.map((c) => ({

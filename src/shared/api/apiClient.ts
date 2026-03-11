@@ -1,44 +1,59 @@
-import ky from 'ky';
-import { ApiError } from './ApiError';
+import ky, { type BeforeErrorHook, type BeforeRequestHook } from 'ky';
+import { useAuthStore } from '@/shared/model/auth/store';
 
-const getBaseUrl = () => {
-  if (typeof window !== 'undefined') return '/api'; // 브라우저 환경에서는 상대 경로
-  // 서버 환경 (Next.js SSR) 에서는 절대 경로 사용
-  if (process.env.NEXT_PUBLIC_API_URL)
-    return `${process.env.NEXT_PUBLIC_API_URL}/api`;
-  return 'http://localhost:3000/api';
+const beforeRequest: BeforeRequestHook = async (request) => {
+  // Zustand 메모리에서 access_token 꺼내서 헤더 주입
+  const token = useAuthStore.getState().accessToken;
+  if (token) {
+    request.headers.set('Authorization', `Bearer ${token}`);
+  }
+};
+
+const afterResponseRetry = async (
+  request: Request,
+  _options: unknown,
+  response: Response
+) => {
+  if (response.status !== 401) return response;
+
+  // access_token 만료 -> /api/auth/refresh 로 재발급 (Next.js Route Handler 호출)
+  try {
+    const result = await ky
+      .post('/api/auth/refresh')
+      .json<{ accessToken: string }>();
+
+    if (result.accessToken) {
+      // 새 토큰 저장 후 원래 요청 재시도
+      useAuthStore.getState().setToken(result.accessToken);
+      request.headers.set('Authorization', `Bearer ${result.accessToken}`);
+      return ky(request);
+    }
+  } catch (error) {
+    // refresh_token도 만료 -> 로그인 페이지로 리다이렉트
+    useAuthStore.getState().clearToken();
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login';
+    }
+  }
+
+  return response;
+};
+
+const beforeError: BeforeErrorHook = async (error) => {
+  const body = (await error.response
+    .json()
+    .catch(() => ({}))) as { message?: string };
+  (error as Error).message =
+    body.message ?? '알 수 없는 오류가 발생했습니다.';
+  return error;
 };
 
 export const apiClient = ky.create({
-  prefixUrl: getBaseUrl(), // 서버와 클라이언트 환경에 맞게 기본 경로 설정
-  timeout: 10000, // 10초 타임아웃
-  retry: {
-    limit: 2, // 에러 시 최대 2번 재시도
-    methods: ['get'], // GET 요청만 재시도
-  },
+  prefixUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
+  credentials: 'include', // refresh_token 쿠키를 함께 전송
   hooks: {
-    beforeRequest: [],
-    afterResponse: [
-      async (request, options, response) => {
-        if (!response.ok) {
-          try {
-            const errorData = await response.json<any>();
-            // 백엔드에서 내려주는 에러 명세를 ApiError로 변환
-            throw new ApiError(
-              errorData.code || 'UNKNOWN_ERROR',
-              errorData.message || '알 수 없는 오류가 발생했습니다.'
-            );
-          } catch (e) {
-            if (e instanceof ApiError) throw e;
-
-            // JSON 파싱 실패 혹은 기타 에러 시 기본 에러 처리
-            if (response.status === 401) {
-              console.error('인증이 만료되었습니다.');
-            }
-            // throw e를 하지 않으면 ky의 기본 HTTPError가 던져짐
-          }
-        }
-      },
-    ],
+    beforeRequest: [beforeRequest],
+    afterResponse: [afterResponseRetry],
+    beforeError: [beforeError],
   },
 });

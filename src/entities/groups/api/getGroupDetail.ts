@@ -15,6 +15,7 @@ export interface GroupDetailDTO {
   likes: number;
   liked: boolean;
   myRole?: 'LEADING' | 'MEMBER' | 'GUEST';
+  isPending?: boolean;
   unreadChatCount?: number;
   nextSchedule?: {
     title: string;

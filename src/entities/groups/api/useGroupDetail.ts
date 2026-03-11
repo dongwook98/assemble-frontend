@@ -3,11 +3,12 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getGroupDetail } from './getGroupDetail';
 import { GroupDetail } from '../model/types';
-import { CATEGORY_MAP, LEVEL_MAP } from '../lib/constants';
+import { groupKeys } from '../model/group.queries';
+import { CATEGORY_MAP, LEVEL_MAP, STATUS_MAP } from '../lib/constants';
 
 export const useGroupDetail = (id: string) => {
   return useSuspenseQuery({
-    queryKey: ['groups', id],
+    queryKey: groupKeys.detail(id),
     queryFn: () => getGroupDetail(id),
     select: (data): GroupDetail => {
       const group = data.result;
@@ -18,6 +19,7 @@ export const useGroupDetail = (id: string) => {
         description: group.description,
         categoryLabel: CATEGORY_MAP[group.category] || group.category,
         levelLabel: LEVEL_MAP[group.level] || group.level,
+        statusLabel: STATUS_MAP[group.status] || group.status,
         location: group.region,
         participants: {
           current: group.curNumbers,
@@ -30,6 +32,7 @@ export const useGroupDetail = (id: string) => {
         },
         isRecruiting: group.status === 'RECRUTING',
         myRole: group.myRole || 'GUEST',
+        isPending: group.isPending || false,
         unreadChatCount: group.unreadChatCount,
         nextSchedule: group.nextSchedule,
       };

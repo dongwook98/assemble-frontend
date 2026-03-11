@@ -3,10 +3,11 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getMyPosts } from './getMyPosts';
 import { MyPost } from '../model/types';
+import { activityKeys } from '../model/activity.queries';
 
 export const useMyPosts = () => {
   return useSuspenseQuery({
-    queryKey: ['activities', 'posts'],
+    queryKey: activityKeys.posts(),
     queryFn: getMyPosts,
     select: (data): MyPost[] =>
       data.list.map((p) => ({
