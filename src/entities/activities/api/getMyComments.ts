@@ -1,4 +1,5 @@
 import { apiClient } from '@/shared/api/apiClient';
+import { ApiListResponse } from '@/shared/api/types';
 
 export interface MyCommentDTO {
   commentId: number;
@@ -16,5 +17,5 @@ export interface MyCommentDTO {
  * GET /users/me/comments
  */
 export const getMyComments = async () => {
-  return apiClient.get('users/me/comments').json<{ list: MyCommentDTO[] }>();
+  return apiClient.get('users/me/comments').json<ApiListResponse<MyCommentDTO>>();
 };

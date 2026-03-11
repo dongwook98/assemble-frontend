@@ -1,5 +1,4 @@
 import { apiClient } from '@/shared/api/apiClient';
-import { ApiResponse } from '@/shared/api/types';
 
 export interface GroupDetailDTO {
   clubId: number;
@@ -25,6 +24,6 @@ export interface GroupDetailDTO {
 
 export const getGroupDetail = async (
   id: string | number
-): Promise<ApiResponse<GroupDetailDTO>> => {
-  return apiClient.get(`groups/${id}`).json<ApiResponse<GroupDetailDTO>>();
+): Promise<GroupDetailDTO> => {
+  return apiClient.get(`groups/${id}`).json<GroupDetailDTO>();
 };

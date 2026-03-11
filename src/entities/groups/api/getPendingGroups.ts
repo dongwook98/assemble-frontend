@@ -1,4 +1,5 @@
 import { apiClient } from '@/shared/api/apiClient';
+import { ApiListResponse } from '@/shared/api/types';
 import { GroupListItemDTO } from './getGroupList';
 
 /**
@@ -6,5 +7,5 @@ import { GroupListItemDTO } from './getGroupList';
  * GET /groups/pending
  */
 export const getPendingGroups = async () => {
-  return apiClient.get('groups/pending').json<{ list: GroupListItemDTO[] }>();
+  return apiClient.get('groups/pending').json<ApiListResponse<GroupListItemDTO>>();
 };

@@ -1,4 +1,5 @@
 import { apiClient } from '@/shared/api/apiClient';
+import { ApiListResponse } from '@/shared/api/types';
 
 export interface JoinedGroupDTO {
   clubId: number;
@@ -26,5 +27,5 @@ export interface JoinedGroupDTO {
 }
 
 export const getJoinedGroups = async () => {
-  return apiClient.get('groups/joined').json<{ list: JoinedGroupDTO[] }>();
+  return apiClient.get('groups/joined').json<ApiListResponse<JoinedGroupDTO>>();
 };

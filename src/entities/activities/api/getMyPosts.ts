@@ -1,4 +1,5 @@
 import { apiClient } from '@/shared/api/apiClient';
+import { ApiListResponse } from '@/shared/api/types';
 
 export interface MyPostDTO {
   postId: number;
@@ -17,5 +18,5 @@ export interface MyPostDTO {
  * GET /users/me/posts
  */
 export const getMyPosts = async () => {
-  return apiClient.get('users/me/posts').json<{ list: MyPostDTO[] }>();
+  return apiClient.get('users/me/posts').json<ApiListResponse<MyPostDTO>>();
 };

@@ -1,5 +1,5 @@
 import { apiClient } from '@/shared/api/apiClient';
-import { ApiResponse, ApiListResponse } from '@/shared/api/types';
+import { ApiListResponse } from '@/shared/api/types';
 
 /**
  * [DTO] 모임 목록 아이템 규격 (백엔드 명세)
@@ -19,7 +19,9 @@ export interface GroupListItemDTO {
   liked: boolean;
 }
 
-export const getGroupList = async (params?: Record<string, any>) => {
+export const getGroupList = async (
+  params?: Record<string, string | number | boolean | string[] | undefined>
+) => {
   const searchParams = new URLSearchParams();
 
   if (params) {
@@ -33,8 +35,8 @@ export const getGroupList = async (params?: Record<string, any>) => {
     });
   }
 
-  // 표준 ApiResponse 규격 적용
+  // 표준 ApiResponse 규격 적용 (apiClient에서 result 자동 추출)
   return apiClient
     .get('groups', { searchParams })
-    .json<ApiResponse<ApiListResponse<GroupListItemDTO>>>();
+    .json<ApiListResponse<GroupListItemDTO>>();
 };
