@@ -1,8 +1,7 @@
 import { RequestHandler } from 'msw';
 
 export const initMsw = async (handlers: RequestHandler[]) => {
-  if (process.env.NODE_ENV !== 'development') return;
-
+  // 환경 체크 로직은 이를 호출하는 쪽(instrumentation, MSWProvider)으로 위임합니다.
   if (typeof window === 'undefined') {
     // 서버(Node.js) 환경
     const { server } = await import('./server');
