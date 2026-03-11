@@ -14,14 +14,17 @@ export const MSWProvider = ({ children }: { children: React.ReactNode }) => {
 
     const setup = async () => {
       try {
-        if (process.env.NODE_ENV === 'development') {
+        const isMockingEnabled =
+          process.env.NODE_ENV === 'development' ||
+          process.env.NEXT_PUBLIC_API_MOCKING === 'enabled';
+
+        if (isMockingEnabled) {
           // shared/lib/msw/init에서 초기화 로직을 가져옴
           const { initMsw } = await import('./init');
           // shared/api/mock/handlers에서 통합 핸들러를 가져옴
           const { allHandlers } = await import('@/shared/api/mock/handlers');
 
           await initMsw(allHandlers);
-          setIsReady(true);
         }
       } catch (error) {
         console.error('[MSW] Failed to initialize:', error);
@@ -34,7 +37,11 @@ export const MSWProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isReady]);
 
   // MSW 준비 전까지 하이드레이션 에러 방지 및 안전한 모킹 보장
-  if (process.env.NODE_ENV === 'development' && !isReady) {
+  const isMockingEnabled =
+    process.env.NODE_ENV === 'development' ||
+    process.env.NEXT_PUBLIC_API_MOCKING === 'enabled';
+
+  if (isMockingEnabled && !isReady) {
     return null;
   }
 
