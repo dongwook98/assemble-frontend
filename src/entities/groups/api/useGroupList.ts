@@ -2,10 +2,34 @@
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import { getGroupList } from './getGroupList';
+import { getGroupList, type GroupListItemDTO } from './getGroupList';
 import { Group } from '../model/types';
 import { groupKeys } from '../model/group.queries';
 import { CATEGORY_MAP, LEVEL_MAP, STATUS_MAP } from '../lib/constants';
+
+/**
+ * [Mapper] DTO -> Frontend Model 변환 함수
+ */
+const mapGroupListItemToModel = (dto: GroupListItemDTO): Group => ({
+  id: dto.clubId,
+  title: dto.name,
+  image: dto.imageUrl || '/default-group.png',
+  description: dto.description,
+  categoryLabel: CATEGORY_MAP[dto.category] || dto.category,
+  location: dto.region,
+  levelLabel: LEVEL_MAP[dto.level] || dto.level,
+  statusLabel: STATUS_MAP[dto.status] || dto.status,
+  participants: {
+    current: dto.curNumbers,
+    max: dto.maxNumbers,
+    isFull: dto.curNumbers >= dto.maxNumbers,
+  },
+  like: {
+    count: dto.likes,
+    isLiked: dto.liked,
+  },
+  isRecruiting: dto.status === 'RECRUTING',
+});
 
 export const useGroupList = () => {
   const searchParams = useSearchParams();
@@ -15,26 +39,8 @@ export const useGroupList = () => {
     queryKey: groupKeys.list(params),
     queryFn: () => getGroupList(params),
     select: (data): Group[] => {
-      return data.list.map((group) => ({
-        id: group.clubId,
-        title: group.name,
-        image: group.imageUrl || '/default-group.png',
-        description: group.description,
-        categoryLabel: CATEGORY_MAP[group.category] || group.category,
-        location: group.region,
-        levelLabel: LEVEL_MAP[group.level] || group.level,
-        statusLabel: STATUS_MAP[group.status] || group.status,
-        participants: {
-          current: group.curNumbers,
-          max: group.maxNumbers,
-          isFull: group.curNumbers >= group.maxNumbers,
-        },
-        like: {
-          count: group.likes,
-          isLiked: group.liked,
-        },
-        isRecruiting: group.status === 'RECRUTING',
-      }));
+      // API 응답 구조(ApiResponse.result.list)에 맞춰 매핑 수행
+      return data.result.list.map(mapGroupListItemToModel);
     },
     staleTime: 60 * 1000,
   });

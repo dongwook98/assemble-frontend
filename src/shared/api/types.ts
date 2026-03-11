@@ -1,14 +1,27 @@
-export interface ApiSuccess<T> {
-  isSuccess: true;
+/**
+ * 백엔드 서버의 공통 응답 규격입니다.
+ */
+export type ApiResponse<T> = {
+  isSuccess: boolean;
   code: string;
   message: string;
   result: T;
-  timestamp: string;
-}
+};
 
-export interface ApiErrorResponse<C extends string = string> {
+/**
+ * 리스트 형태의 데이터를 담는 규격입니다.
+ */
+export type ApiListResponse<T> = {
+  list: T[];
+  totalCount?: number;
+  hasNext?: boolean;
+};
+
+/**
+ * 에러 발생 시 서버에서 내려주는 응답 규격입니다.
+ */
+export type ApiErrorResponse = {
   isSuccess: false;
-  code: C;
+  code: string;
   message: string;
-  timestamp: string;
-}
+};
