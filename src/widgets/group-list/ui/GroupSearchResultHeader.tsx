@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useGroupList } from '../api/useGroupList';
+import { useGroupList } from '@/entities/groups/api/useGroupList';
 
 /**
  * 모임 목록 상단에 표시되는 검색 결과 헤더입니다.

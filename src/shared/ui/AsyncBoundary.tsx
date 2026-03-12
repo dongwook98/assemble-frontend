@@ -1,13 +1,13 @@
 'use client';
 
-import { Suspense, type ReactNode } from 'react';
+import { Suspense, type ReactNode, type ComponentType } from 'react';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 import { ApiErrorFallback } from './ApiErrorFallback';
 
 type Props = {
   children: ReactNode;
   loadingFallback: ReactNode;
-  errorFallback?: (props: FallbackProps) => ReactNode;
+  errorFallback?: ComponentType<FallbackProps>;
 };
 
 /**
@@ -20,7 +20,7 @@ export function AsyncBoundary({
   errorFallback,
 }: Props) {
   return (
-    <ErrorBoundary fallbackRender={errorFallback ?? ApiErrorFallback}>
+    <ErrorBoundary FallbackComponent={errorFallback ?? ApiErrorFallback}>
       <Suspense fallback={loadingFallback}>{children}</Suspense>
     </ErrorBoundary>
   );

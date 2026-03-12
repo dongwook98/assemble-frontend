@@ -8,7 +8,7 @@ import {
   GroupSortOrder,
 } from '@/features/groups-filter';
 import { GroupList } from '@/entities/groups/ui/GroupList';
-import { GroupSearchResultHeader } from '@/entities/groups/ui/GroupSearchResultHeader';
+import { GroupSearchResultHeader } from './GroupSearchResultHeader';
 import { useSearchParams } from 'next/navigation';
 import { AsyncBoundary } from '@/shared/ui/AsyncBoundary';
 
