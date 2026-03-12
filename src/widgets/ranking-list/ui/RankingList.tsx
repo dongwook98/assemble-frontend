@@ -2,7 +2,7 @@
 
 import { useRanking } from '@/entities/groups/api/useRanking';
 import { RankingCard } from './RankingCard';
-import { Suspense } from 'react';
+import { AsyncBoundary } from '@/shared/ui/AsyncBoundary';
 
 interface RankingListProps {
   type: 'hall-of-fame' | 'weekly';
@@ -11,11 +11,11 @@ interface RankingListProps {
 const RankingListContent = ({ type }: RankingListProps) => {
   const { data: rankings } = useRanking(type);
 
-  if (rankings.length === 0) {
+  if (!rankings || rankings.length === 0) {
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center gap-4 rounded-[3rem] border border-dashed border-slate-200 bg-slate-50/50">
         <p className="font-bold text-slate-400">
-          명예의 전당 데이터가 아직 없습니다.
+          데이터가 아직 없습니다.
         </p>
       </div>
     );
@@ -32,8 +32,8 @@ const RankingListContent = ({ type }: RankingListProps) => {
 
 export const RankingList = (props: RankingListProps) => {
   return (
-    <Suspense
-      fallback={
+    <AsyncBoundary
+      loadingFallback={
         <div className="flex animate-pulse flex-col gap-3 md:gap-4">
           {[...Array(5)].map((_, i) => (
             <div key={i} className="h-28 w-full rounded-[2rem] bg-slate-100" />
@@ -42,6 +42,6 @@ export const RankingList = (props: RankingListProps) => {
       }
     >
       <RankingListContent {...props} />
-    </Suspense>
+    </AsyncBoundary>
   );
 };
