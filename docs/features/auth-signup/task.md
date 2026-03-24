@@ -15,20 +15,16 @@
     *   [x] 회원가입 완료 후 자동 로그인 연동
     *   [x] 성공 시 메인 화면 이동 및 실패 시 에러 핸들링
     *   [x] `SignupPage` 라우트 연결
+*   [x] **Phase 5: 실제 백엔드 API 연동 및 이메일 인증**
+    *   [x] `authApi.ts`: 엔드포인트 수정 (`/api/members/signup`)
+    *   [x] `authApi.ts`: 이메일 인증 요청 API 추가 (`/api/members/email`)
+    *   [x] `apiClient.ts`: `result` 필드 없는 응답(void) 처리 로직 보완
+    *   [x] `SignupForm`: 이메일 인증 요청 버튼 UI 추가 및 기능 연동
+    *   [x] `SignupForm`: 회원가입 제출 시 `confirmPassword` 필드 제외 처리
 
 ## 2. 세부 체크리스트 (Detailed Tasks)
-### 🚀 Phase 1-2 (완료)
-- [x] 비밀번호 확인 일치 검증 로직 구현
-- [x] 최소 1개 카테고리 필수 선택 규칙 적용
-- [x] API 성공/실패 응답 모의 데이터 구성
-
-### 🎨 Phase 3-4 (완료)
-- [x] Lucide 아이콘 적용 (User, Mail, Lock)
-- [x] 카테고리 선택 시 실시간 색상 변화 및 상태 업데이트
-- [x] `router.replace`를 이용한 히스토리 관리 (뒤로가기 방지)
-
-## 3. 검증 및 테스트 계획 (Verification)
-*   [x] 비밀번호 확인이 다를 때 에러 메시지 노출 여부 확인
-*   [x] 카테고리 미선택 시 제출 차단 및 경고 확인
-*   [x] 정상 가입 후 별도 로그인 없이 홈 화면 진입 확인
-*   [x] 모킹된 에러 상황(예: 이미 존재하는 이메일) 대응 확인
+### 🚀 Phase 5: API Refactoring & Email Auth
+- [x] `SignupForm`에서 이메일 입력값 유효성 확인 후 '인증 요청' 버튼 활성화 로직
+- [x] 이메일 인증 요청 성공 시 토스트 알림 표시 (현재 alert으로 대체)
+- [x] 회원가입 요청 데이터 변환 (FormValues -> SignupRequest)
+- [x] 서버 에러(예: MEMBER4003) 발생 시 명세에 따른 메시지 노출 (ApiError 활용)
