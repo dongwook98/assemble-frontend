@@ -87,7 +87,8 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         <Button
           type="submit"
           disabled={isPending}
-          className="mt-2 justify-center py-6 text-base font-bold"
+          size="lg"
+          className="mt-2 w-full justify-center text-base font-bold"
         >
           {isPending ? '로그인 중...' : '로그인'}
         </Button>
